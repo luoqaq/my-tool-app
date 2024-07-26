@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 interface CopyStore {
     copyCatchList: CopyCatchItem[];
-    copyCatch: (data: CopyCatchItem) => void;
+    setCopyCatch: (data: CopyCatchItem) => void;
     clearCopyCatch: (data?: {type?: CopyCatchType | 'all', beforeTime?: number}) => void;
 }
 
@@ -14,7 +14,7 @@ export const useCopyStore = create<CopyStore>((set) => ({
     // 复制缓存列表
     copyCatchList: [],
     // 增加复制缓存
-    copyCatch: (data) => set((state) => ({ copyCatchList: [...state.copyCatchList, data] })),
+    setCopyCatch: (data) => set((state) => ({ copyCatchList: [...state.copyCatchList, data] })),
     // 清除复制缓存
     clearCopyCatch: (data) => set(state => {
         const { type = 'all', beforeTime = 0 } = data || {};
