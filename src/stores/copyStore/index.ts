@@ -6,6 +6,7 @@ interface CopyStore {
     setCopyCatch: (data: CopyCatchItem) => void;
     clearCopyCatch: (data?: {type?: CopyCatchType | 'all', beforeTime?: number}) => void;
     deleteCopyCatch: (ids: string[]) => void;
+    topCopyCatch: (id: string) => void;
 }
 
 /**
@@ -83,4 +84,17 @@ export const useCopyStore = create<CopyStore>((set) => ({
             }
         })
     },
+    // 置顶指定的缓存记录
+    topCopyCatch(id: string) {
+        set(state => {
+            const newList = state.copyCatchList.filter(item => item.id!== id);
+            const target = state.copyCatchList.find(item => item.id === id);
+            if (target) {
+                newList.unshift(target);
+            }
+            return {
+                copyCatchList: newList
+            }
+        })
+    }
 }))

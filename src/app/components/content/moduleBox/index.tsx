@@ -16,13 +16,11 @@ export default function ModuleBox(props: Props) {
 
     return (
         <Card className={className}>
-            <CardHeader className='justify-between items-center py-2'>
+            <CardHeader className='justify-between items-center'>
                 <CardTitle>{module.name}</CardTitle>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button size="sm" variant="ghost">
-                            <Ellipsis/>
-                        </Button>
+                        <Ellipsis className="cursor-pointer" size={20} />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         {module.operates?.map(item => (

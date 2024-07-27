@@ -38,18 +38,18 @@ export const CopyCatchTypes = [
         label: "全部",
         value: CopyCatchType.all,
         bg: "bg-sky-200",
-        activeBg: "bg-sky-500",
+        activeBg: "bg-sky-600",
     },
     {
         label: "文本",
         value: CopyCatchType.text,
         bg: "bg-indigo-200",
-        activeBg: "bg-indigo-500",
+        activeBg: "bg-indigo-600",
     },
     {
         label: "图片",
         value: CopyCatchType.image,
         bg: "bg-orange-200",
-        activeBg: "bg-orange-500",
+        activeBg: "bg-orange-600",
     }
 ]

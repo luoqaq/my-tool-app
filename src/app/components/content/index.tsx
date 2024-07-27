@@ -17,7 +17,6 @@ const ModuleMap: Record<ModuleType, ModuleItem> = {
             {
                 name: '复制',
                 onClick: () => {
-                    navigator.clipboard.writeText('Hello, world!');
                 }
             }
         ]

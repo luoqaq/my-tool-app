@@ -1,6 +1,5 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useCopyStore } from '@/stores/copyStore';
 import { useSettingStore } from '@/stores/settingStore';
@@ -9,6 +8,8 @@ import React, { useMemo, useState } from'react';
 import Image from 'next/image'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Clipboard, X } from 'lucide-react';
+import { copyToClipboard } from '@/utils/copy';
+import { useToast } from '@/components/ui/use-toast';
 
 
 const Copy = () => {
@@ -19,7 +20,10 @@ const Copy = () => {
         setCopyCatch,
         clearCopyCatch,
         deleteCopyCatch,
+        topCopyCatch,
     } = useCopyStore(state => state);
+
+    const { toast } = useToast();
 
     // 当前选中的标签类型
     const [currentType, setCurrentType] = useState<CopyCatchType>(CopyCatchType.all)
@@ -57,7 +61,7 @@ const Copy = () => {
             <div className='flex'>
                 {
                     CopyCatchTypes.map(item => (
-                        <div key={item.label} className={`text-white font-semibold mr-3 cursor-pointer whitespace-nowrap hover:!${item.activeBg} ${currentType === item.value ? item.activeBg : item.bg} inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors`} onClick={() => setCurrentType(item.value)}>{item.label}</div>
+                        <div key={item.label} className={`text-white font-semibold mr-3 cursor-pointer whitespace-nowrap hover:!${item.activeBg} ${currentType === item.value ? `${item.activeBg}` : `${item.bg}`} inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors`} onClick={() => setCurrentType(item.value)}>{item.label}</div>
                     ))
                 }
             </div>
@@ -68,8 +72,8 @@ const Copy = () => {
         <ScrollArea className='mt-4' style={{height: 'calc(100% - 40px)'}}>
             <div>
                 {
-                    showedList.map(item => (
-                        <div key={item.id} className='flex justify-between py-2 border-b border-slate-200'>
+                    showedList.map((item, index) => (
+                        <div key={item.id} className='flex justify-between py-2 border-t border-slate-200'>
                             <div className='flex items-center mr-8'>
                                 {item.type === CopyCatchType.image ? (
                                     <Image src={item.content} height={100} alt='图片' />
@@ -78,8 +82,23 @@ const Copy = () => {
                                 )}
                             </div>
                             <div className='whitespace-nowrap'>
-                                <button onClick={() => {}} className='mr-4 opacity-60'><Clipboard size={16}/></button>
-                                <button onClick={() => {deleteCopyCatch([item.id])}} className='opacity-60'><X size={16}/></button>
+                                <button onClick={() => {
+                                    // 复制到剪切板
+                                    copyToClipboard(item.content).then(() => {
+                                        // 置顶
+                                        index !== 0 && topCopyCatch(item.id)
+                                        toast({
+                                            title: '复制成功',
+                                        })
+                                    }).catch(() => {
+                                        toast({
+                                            title: '复制失败',
+                                            variant: 'destructive',
+                                        })
+                                    });
+
+                                }} className='mr-2 opacity-60'><Clipboard size={16}/></button>
+                                <button onClick={() => {deleteCopyCatch([item.id])}} className='mr-2 opacity-60'><X size={16}/></button>
                             </div>
                         </div>
                     ))
