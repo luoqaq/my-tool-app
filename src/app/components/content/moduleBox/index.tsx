@@ -16,11 +16,11 @@ export default function ModuleBox(props: Props) {
 
     return (
         <Card className={className}>
-            <CardHeader className='justify-between items-center'>
+            <CardHeader className='justify-between items-center py-2'>
                 <CardTitle>{module.name}</CardTitle>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button size="sm" variant="ghost">
                             <Ellipsis/>
                         </Button>
                     </DropdownMenuTrigger>
@@ -33,7 +33,7 @@ export default function ModuleBox(props: Props) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{height: 'calc(100% - 60px)'}}>
                 {module.component}
             </CardContent>
         </Card>

@@ -35,7 +35,7 @@ export default function Content() {
     const firtModule = useMemo(() => ModuleMap[sortedModules[0]], [sortedModules]);
 
     return (
-        <article className='w-full p-4 pt-0' style={{height: 'calc(100vh - 48px)'}}>
+        <article className='w-full p-4 pt-0' style={{height: 'calc(100vh - 60px)'}}>
             <ModuleBox module={firtModule} className='w-1/2 h-full' />
         </article>
     )
