@@ -1,4 +1,4 @@
-import { CopyCatchTimeType, SettingCopyConfig } from '@/types/copy';
+import { CopyCatchTimeType, SettingCopyConfig } from '@/typesAndStatics/copy';
 import { create } from 'zustand';
 
 interface SettingStore {

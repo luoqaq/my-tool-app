@@ -1,4 +1,4 @@
-import { CopyCatchItem, CopyCatchType } from "@/types/copy";
+import { CopyCatchItem, CopyCatchType } from "@/typesAndStatics/copy";
 import { create } from "zustand";
 
 interface CopyStore {

@@ -2,7 +2,7 @@
 
 import { useCopyStore } from '@/stores/copyStore';
 import { useSettingStore } from '@/stores/settingStore';
-import React from'react';
+import React, { useEffect } from'react';
 
 const Copy = () => {
     const copyConfig = useSettingStore(state => state.copyConfig);
@@ -14,18 +14,12 @@ const Copy = () => {
         clearCopyCatch
     } = useCopyStore(state => state);
 
-    console.log('copyConfig', copyConfig)
+    useEffect(() => {
+        setTimeout(() => {
+            setCopyConfig({...copyConfig, catchPath: '/catch'})
 
-    setTimeout(() => {
-        setCopyConfig({
-            ...copyConfig,
-            catchPath: '/copy'
-        })
-    }, 2000)
-
-    setTimeout(() => {
-        console.log('首页 10s后 copyConfig', copyConfig)
-      }, 10000);
+        }, 2000)
+    })
 
     return <div>
         <h1>Copy</h1>
