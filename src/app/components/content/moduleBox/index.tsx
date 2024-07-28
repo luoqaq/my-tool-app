@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import Copy from "@/app/copy/components/copy";
 import { CardHeader, CardTitle, CardContent, Card } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ModuleItem } from "@/typesAndStatics/moduleManage";
@@ -24,7 +24,7 @@ export default function ModuleBox(props: Props) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         {module.operates?.map(item => (
-                            <DropdownMenuItem key={item.name} onClick={item.onClick}>
+                            <DropdownMenuItem key={item.name} onClick={() => {item.onClick?.(item)}}>
                                 {item.name}
                             </DropdownMenuItem>
                         ))}

@@ -53,3 +53,5 @@ export const CopyCatchTypes = [
         activeBg: "bg-orange-600",
     }
 ]
+
+export const LocalTextFIlePath = 'copyCatchList.txt'

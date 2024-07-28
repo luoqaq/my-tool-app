@@ -2,25 +2,21 @@
 
 import { Input } from '@/components/ui/input';
 import { useCopyStore } from '@/stores/copyStore';
-import { useSettingStore } from '@/stores/settingStore';
 import { CopyCatchType, CopyCatchTypes } from '@/typesAndStatics/copy';
-import React, { useMemo, useState } from'react';
+import React, { memo, useEffect, useMemo, useState } from'react';
 import Image from 'next/image'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Clipboard, X } from 'lucide-react';
-import { copyToClipboard } from '@/utils/copy';
+import { copyToClipboard, useListenClipboardChange } from '@/utils/copy';
 import { useToast } from '@/components/ui/use-toast';
 
 
 const Copy = () => {
-    const {copyConfig, changeCopyConfig} = useSettingStore(state => state);
-
     const {
         copyCatchList,
-        setCopyCatch,
-        clearCopyCatch,
         deleteCopyCatch,
         topCopyCatch,
+        setCopyCatch,
     } = useCopyStore(state => state);
 
     const { toast } = useToast();
@@ -29,7 +25,6 @@ const Copy = () => {
     const [currentType, setCurrentType] = useState<CopyCatchType>(CopyCatchType.all)
     // 搜索的内容
     const [inputValue, setInputValue] = useState('')
-
 
     // 类型过滤后的列表
     const filteredList = useMemo(() => {
@@ -76,7 +71,7 @@ const Copy = () => {
                         <div key={item.id} className='flex justify-between py-2 border-t border-slate-200'>
                             <div className='flex items-center mr-8'>
                                 {item.type === CopyCatchType.image ? (
-                                    <Image src={item.content} height={100} alt='图片' />
+                                    <Image src={`data:image/jpeg;base64,${item.content}`} width={100} height={100} alt='图片' />
                                 ) : (
                                     <p className='text-sm break-all'>{item.content}</p>
                                 )}
@@ -84,9 +79,7 @@ const Copy = () => {
                             <div className='whitespace-nowrap'>
                                 <button onClick={() => {
                                     // 复制到剪切板
-                                    copyToClipboard(item.content).then(() => {
-                                        // 置顶
-                                        index !== 0 && topCopyCatch(item.id)
+                                    copyToClipboard(item.content, item.type).then(() => {
                                         toast({
                                             title: '复制成功',
                                         })
@@ -107,6 +100,6 @@ const Copy = () => {
         </ScrollArea>
     </div>
 
-}
+};
 
 export default Copy;

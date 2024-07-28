@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo } from'react';
+import React, { useEffect, useMemo } from'react';
 import Copy from '@/app/copy/components/copy';
 import Todo from '@/app/todo/components/todo';
 
@@ -32,6 +32,10 @@ export default function Content() {
     const sortedModules = useModuleManageStore(state => state.sortedModules);
 
     const firtModule = useMemo(() => ModuleMap[sortedModules[0]], [sortedModules]);
+
+    useEffect(() => {
+        console.log('Content Render');
+    }, []);
 
     return (
         <article className='w-full p-4 pt-0' style={{height: 'calc(100vh - 60px)'}}>

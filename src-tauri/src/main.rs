@@ -5,10 +5,13 @@ mod utils;
 
 fn main() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_clipboard::init())
     .invoke_handler(tauri::generate_handler![
       utils::copy::get_clipboard_content,
       utils::copy::set_clipboard_content,
-      utils::setting::get_installation_path
+      utils::setting::get_installation_path,
+      utils::setting::write_to_file,
+      utils::setting::read_from_file,
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

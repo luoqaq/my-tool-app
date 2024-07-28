@@ -1,8 +1,10 @@
-import { CopyCatchItem, CopyCatchType } from "@/typesAndStatics/copy";
+import { CopyCatchItem, CopyCatchType, LocalTextFIlePath } from "@/typesAndStatics/copy";
+import { readFromLocal } from "@/utils/setting";
 import { create } from "zustand";
 
 interface CopyStore {
     copyCatchList: CopyCatchItem[];
+    init: () => void;
     setCopyCatch: (data: CopyCatchItem) => void;
     clearCopyCatch: (data?: {type?: CopyCatchType | 'all', beforeTime?: number}) => void;
     deleteCopyCatch: (ids: string[]) => void;
@@ -14,53 +16,28 @@ interface CopyStore {
  */
 export const useCopyStore = create<CopyStore>((set) => ({
     // 复制缓存列表
-    copyCatchList: [
-        {
-            id: '1',
-            type: CopyCatchType.text,
-            content: '123456',
-            crateTime: Date.now()
-        },
-        {
-            id: '2',
-            type: CopyCatchType.text,
-            content: '123456fdsalfaslkdjflkjasdlkfjlaksdjflkjasdlkfjalksdjflkajsdlkfjasdlkjfkl;asdjflkjasdlkfjlaksdjdfdlkajsdlkfjklasdjflkasjdlkfjsakldjfkl',
-            crateTime: Date.now() + 1
-        },
-        {
-            id: '3',
-            type: CopyCatchType.text,
-            content: '123456fdsalfaslkdjflkjasdlkfjlaksdjflkjasdlkfjalksdjflkajsdlkfjasdlkjfkl;asdjflkjasdlkfjlaksdjdfdlkajsdlkfjklasdjflkasjdlkfjsakldjfkl',
-            crateTime: Date.now() + 1
-        },
-        {
-            id: '4',
-            type: CopyCatchType.text,
-            content: '123456fdsalfaslkdjflkjasdlkfjlaksdjflkjasdlkfjalksdjflkajsdlkfjasdlkjfkl;asdjflkjasdlkfjlaksdjdfdlkajsdlkfjklasdjflkasjdlkfjsakldjfkl',
-            crateTime: Date.now() + 1
-        },
-        {
-            id: '5',
-            type: CopyCatchType.text,
-            content: '123456fdsalfaslkdjflkjasdlkfjlaksdjflkjasdlkfjalksdjflkajsdlkfjasdlkjfkl;asdjflkjasdlkfjlaksdjdfdlkajsdlkfjklasdjflkasjdlkfjsakldjfkl',
-            crateTime: Date.now() + 1
-        },
-        {
-            id: '6',
-            type: CopyCatchType.text,
-            content: '123456fdsalfaslkdjflkjasdlkfjlaksdjflkjasdlkfjalksdjflkajsdlkfjasdlkjfkl;asdjflkjasdlkfjlaksdjdfdlkajsdlkfjklasdjflkasjdlkfjsakldjfkl',
-            crateTime: Date.now() + 1
-        },
-        {
-            id: '78',
-            type: CopyCatchType.text,
-            content: '123456fdsalfaslkdjflkjasdlkfjlaksdjflkjasdlkfjalksdjflkajsdlkfjasdlkjfkl;asdjflkjasdlkfjlaksdjdfdlkajsdlkfjklasdjflkasjdlkfjsakldjfkl',
-            crateTime: Date.now() + 1
-        },
-
-    ],
+    copyCatchList: [],
+    // 初始化
+    init: async () => {
+        // 从本地加载
+        const data = await readFromLocal(LocalTextFIlePath);
+        console.log('从本地架子啊', data);
+        if (!data) return;
+        set({ copyCatchList: JSON.parse(data) });
+    },
     // 增加复制缓存
-    setCopyCatch: (data) => set((state) => ({ copyCatchList: [...state.copyCatchList, data] })),
+    setCopyCatch: (data) => set(state => {
+        const index = state.copyCatchList.findIndex(item => item.id === data.id);
+        const _copyCatchList = [...state.copyCatchList];
+        if (index === -1) {
+            _copyCatchList.unshift(data);
+        } else {
+            // 有历史的，删除历史，将新的置顶
+            _copyCatchList.splice(index, 1);
+            _copyCatchList.unshift(data);
+        }
+        return {copyCatchList: _copyCatchList};
+    }),
     // 清除复制缓存
     clearCopyCatch: (data) => set(state => {
         const { type = CopyCatchType.all, beforeTime = 0 } = data || {};
@@ -96,5 +73,5 @@ export const useCopyStore = create<CopyStore>((set) => ({
                 copyCatchList: newList
             }
         })
-    }
+    },
 }))
