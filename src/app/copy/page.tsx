@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import Copy from "./components/copy";
 import Link from "next/link";
