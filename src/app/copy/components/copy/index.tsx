@@ -3,20 +3,20 @@
 import { Input } from '@/components/ui/input';
 import { useCopyStore } from '@/stores/copyStore';
 import { CopyCatchType, CopyCatchTypes } from '@/typesAndStatics/copy';
-import React, { memo, useEffect, useMemo, useState } from'react';
+import React, { useMemo, useState } from'react';
 import Image from 'next/image'
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Clipboard, X } from 'lucide-react';
-import { copyToClipboard, useListenClipboardChange } from '@/utils/copy';
+import { copyToClipboard } from '@/utils/copy';
 import { useToast } from '@/components/ui/use-toast';
+import { useWindowSize } from '@/hooks/useWindowSize';
+import dayjs from 'dayjs';
 
 
 const Copy = () => {
     const {
         copyCatchList,
         deleteCopyCatch,
-        topCopyCatch,
-        setCopyCatch,
     } = useCopyStore(state => state);
 
     const { toast } = useToast();
@@ -51,6 +51,18 @@ const Copy = () => {
         setInputValue(e.target.value);
     }
 
+    const { windowSize } = useWindowSize()
+    const itemWidthClass = useMemo(() => {
+        console.log(windowSize)
+        if (windowSize.width < 750) {
+            return 'w-full'
+        }
+        if (windowSize.width < 1500) {
+            return 'w-1/2 odd:pr-8'
+        }
+        return 'w-1/3 pr-6 nth-child(3n):pr-0'
+    }, [windowSize])
+
     return <div className='h-full'>
         <header className='flex items-center justify-between'>
             <div className='flex'>
@@ -65,33 +77,36 @@ const Copy = () => {
             </div>
         </header>
         <ScrollArea className='mt-4' style={{height: 'calc(100% - 40px)'}}>
-            <div>
+            <div className='flex flex-wrap'>
                 {
-                    showedList.map((item, index) => (
-                        <div key={item.id} className='flex justify-between py-2 border-t border-slate-200'>
-                            <div className='flex items-center mr-8'>
+                    showedList.map((item) => (
+                        <div key={item.id} className={`${itemWidthClass} flex justify-between`}>
+                            <div className='grow pr-4 py-2 border-t border-slate-200[.8]'>
                                 {item.type === CopyCatchType.image ? (
                                     <Image src={`data:image/jpeg;base64,${item.content}`} width={100} height={100} alt='图片' />
                                 ) : (
                                     <p className='text-sm break-all'>{item.content}</p>
                                 )}
                             </div>
-                            <div className='whitespace-nowrap'>
-                                <button onClick={() => {
-                                    // 复制到剪切板
-                                    copyToClipboard(item.content, item.type).then(() => {
-                                        toast({
-                                            title: '复制成功',
-                                        })
-                                    }).catch(() => {
-                                        toast({
-                                            title: '复制失败',
-                                            variant: 'destructive',
-                                        })
-                                    });
+                            <div className='flex flex-col justify-between py-2 border-t border-slate-200[.8]'>
+                                <div className='whitespace-nowrap text-right'>
+                                    <button onClick={() => {
+                                        // 复制到剪切板
+                                        copyToClipboard(item.content, item.type).then(() => {
+                                            toast({
+                                                title: '复制成功',
+                                            })
+                                        }).catch(() => {
+                                            toast({
+                                                title: '复制失败',
+                                                variant: 'destructive',
+                                            })
+                                        });
 
-                                }} className='mr-2 opacity-60'><Clipboard size={16}/></button>
-                                <button onClick={() => {deleteCopyCatch([item.id])}} className='mr-2 opacity-60'><X size={16}/></button>
+                                    }} className='mr-4 opacity-60'><Clipboard size={18}/></button>
+                                    <button onClick={() => {deleteCopyCatch([item.id])}} className='mr-2 opacity-60'><X size={18}/></button>
+                                </div>
+                                <p className='text-xs opacity-50 text-right whitespace-nowrap mt-2'>{dayjs(item.crateTime).format('YYYY-MM-DD HH:mm:ss')}</p>
                             </div>
                         </div>
                     ))

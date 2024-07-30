@@ -27,7 +27,7 @@ export const useCopyStore = create<CopyStore>((set) => ({
     },
     // 增加复制缓存
     setCopyCatch: (data) => set(state => {
-        const index = state.copyCatchList.findIndex(item => item.id === data.id);
+        const index = state.copyCatchList.findIndex(item => item.content === data.content);
         const _copyCatchList = [...state.copyCatchList];
         if (index === -1) {
             _copyCatchList.unshift(data);
