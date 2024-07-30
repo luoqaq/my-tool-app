@@ -10,7 +10,7 @@ export default function Headr() {
         <header className='flex justify-between items-center h-12 px-4'>
             <div>
                 {sortedModules.map((moduleType, index) => (
-                    <button key={index} onClick={() => changeSelectedModule(moduleType)} className={`${selectedModule === moduleType? 'text-white' : 'text-gray-400'} mr-2`}>{ModuleMap[moduleType].name || ''}</button>
+                    <button key={index} onClick={() => changeSelectedModule(moduleType)} className={`${selectedModule === moduleType? 'text-foreground font-bold' : 'text-foreground opacity-70'} mr-2`}>{ModuleMap[moduleType].name || ''}</button>
                 ))}
             </div>
             <ModeToggle></ModeToggle>
