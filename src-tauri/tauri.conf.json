@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "my-app",
+    "productName": "小宝箱",
     "version": "0.1.0"
   },
   "tauri": {
@@ -42,7 +42,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.luoqaq.teasure",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

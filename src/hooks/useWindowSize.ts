@@ -1,4 +1,6 @@
-import { appWindow, PhysicalSize } from "@tauri-apps/api/window";
+"use client"
+
+import { appWindow } from "@tauri-apps/api/window";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 

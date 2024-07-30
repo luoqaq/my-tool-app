@@ -1,3 +1,5 @@
+"use client"
+
 import { CopyCatchItem, CopyCatchType, LocalTextFIlePath } from "@/typesAndStatics/copy";
 import { readFromLocal } from "@/utils/setting";
 import { create } from "zustand";

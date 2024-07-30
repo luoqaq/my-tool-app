@@ -1,3 +1,5 @@
+"use client"
+
 import { isPermissionGranted, Options, requestPermission, sendNotification } from '@tauri-apps/api/notification';
 
 /**

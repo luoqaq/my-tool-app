@@ -1,6 +1,7 @@
+"use client"
+
 import { invoke } from '@tauri-apps/api';
 import { writeTextFile, readTextFile, BaseDirectory, exists } from '@tauri-apps/api/fs';
-import { appWindow, PhysicalSize } from '@tauri-apps/api/window';
 
 
 /**

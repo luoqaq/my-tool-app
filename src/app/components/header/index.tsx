@@ -1,11 +1,25 @@
 'use client'
+
 import React from'react';
 import { ModeToggle } from './theme';
-import { ModuleMap, useModuleManageStore } from '@/stores/moduleManageStore';
+import { useModuleManageStore } from '@/stores/moduleManageStore';
+import { ModuleType } from '@/typesAndStatics/moduleManage';
+
+const ModuleMap = {
+    [ModuleType.Copy]: {
+        icon: '',
+        name: '剪切板',
+    },
+    [ModuleType.Todo]: {
+        icon: '',
+        name: 'Todo',
+    },
+}
+
 
 export default function Headr() {
     const { selectedModule, changeSelectedModule, sortedModules } = useModuleManageStore(state => state);
-
+    
     return (
         <header className='flex justify-between items-center h-12 px-4'>
             <div>

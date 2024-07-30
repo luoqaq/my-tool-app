@@ -1,4 +1,5 @@
-import Copy from "@/app/copy/components/copy";
+'use client';
+
 import { CardHeader, CardTitle, CardContent, Card } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ModuleItem } from "@/typesAndStatics/moduleManage";

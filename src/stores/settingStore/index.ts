@@ -1,3 +1,5 @@
+"use client"
+
 import { CopyCatchTimeType, SettingCopyConfig } from '@/typesAndStatics/copy';
 import { create } from 'zustand';
 
